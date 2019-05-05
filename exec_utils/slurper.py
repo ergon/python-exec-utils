@@ -5,10 +5,11 @@ from datetime import datetime
 
 class Slurper(threading.Thread):
 
-    def __init__(self, handle, log_file, log_console, console_handle, capture_output):
+    def __init__(self, handle, log_file, log_console, log_handle, console_handle, capture_output):
         super().__init__()
         self.capture_output = capture_output
         self.console_handle = console_handle
+        self.log_handle = log_handle
 
         if callable(log_console):
             self.console_log_function = log_console
@@ -20,9 +21,9 @@ class Slurper(threading.Thread):
         self.log_console = log_console
         self.log_file = log_file
         if self.log_file:
-            self.log_handle = open(log_file, "a")
+            self.logfile_handle = open(log_file, "a")
         else:
-            self.log_handle = None
+            self.logfile_handle = None
 
         self.handle = handle
         self.result = None
@@ -44,7 +45,9 @@ class Slurper(threading.Thread):
             if self.log_console:
                 self.console_log_function(line)
             if self.log_handle:
-                self.log_handle.write("%s: %s" % (
+                self.log_handle(line)
+            if self.logfile_handle:
+                self.logfile_handle.write("%s: %s" % (
                     datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
                     line))
         self.result = "".join(lines)

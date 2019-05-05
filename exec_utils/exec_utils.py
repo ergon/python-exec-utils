@@ -6,19 +6,23 @@ from exec_utils.slurper import Slurper
 from exec_utils.burper import Burper
 
 class ExecHandler(object):
-    def __init__(self, log_file=None, log_console=False, cwd=None, capture_output=True, env=None):
+    def __init__(self, log_file=None, log_console=False, cwd=None, capture_output=True, env=None,
+                 log_handle=None):
         self.log_file = log_file
         self.capture_output = capture_output
         self.cwd = cwd
         self.env = env
         self.log_console = log_console
+        self.log_handle = log_handle
 
     def prepare(self, cmd, stdin_bytes=None):
         self.cmd = cmd
         self.handle = Popen(self.cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=self.cwd, env=self.env)
 
-        self.stdout = Slurper(self.handle.stdout, self.log_file, self.log_console, sys.stdout, self.capture_output)
-        self.stderr = Slurper(self.handle.stderr, self.log_file, self.log_console, sys.stderr, self.capture_output)
+        self.stdout = Slurper(self.handle.stdout, self.log_file, self.log_console,
+                              self.log_handle, sys.stdout, self.capture_output)
+        self.stderr = Slurper(self.handle.stderr, self.log_file, self.log_console,
+                              self.log_handle, sys.stderr, self.capture_output)
 
         self.stdin = None
 
@@ -54,7 +58,8 @@ class ExecHandler(object):
 
 
 def exec_strict(cmd, stdin_str=None, stdin_bytes=None, log_file=None,
-                log_console=False, cwd=None, capture_output=True, env=None):
+                log_console=False, cwd=None, capture_output=True, env=None,
+                log_handle=None):
     """
     Execute a command, blocking during the execution. Returns the stdout of the
     the command, and can optionally write the output (stderr and stdout) to a logfile and or the console
@@ -66,6 +71,7 @@ def exec_strict(cmd, stdin_str=None, stdin_bytes=None, log_file=None,
     :param stdin_bytes: stdin as byte array, cannot be set together with stdin_str
     :param log_file: if set, stdout/stderr will be written to this file, file will be opened in append mode
     :param log_console: if true, the processes stdout/stderr will be forwarded to the scripts stdout/stderr
+    :param log_handle: if set, will be called for every log line
     :param cwd: if set, the process will be started in the given directory as working directory
     :param capture_output: if set to false, the process will not capture the output, default is true
     :param env: if set, the given dict will be used to setup the env variable. if not set the env of the
@@ -85,7 +91,8 @@ def exec_strict(cmd, stdin_str=None, stdin_bytes=None, log_file=None,
                      log_console=log_console,
                      cwd=cwd,
                      env=env,
-                     capture_output=capture_output)
+                     capture_output=capture_output,
+                     log_handle=log_handle)
 
     eh.prepare(cmd, stdin_bytes)
 
