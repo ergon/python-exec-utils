@@ -18,3 +18,13 @@ def test_simple_call_with_log_handles():
 
     assert len(logs) == 1
     assert logs[0] == "hello world"
+
+def test_capture_stderr():
+
+    cmd = ["bash", "-c", "echo stdout; echo 'onstderr' 1>&2"]
+
+    stdout, stderr = exec_utils.exec_strict(cmd, return_stderr=True)
+
+    assert stdout == "stdout\n"
+    assert stderr == "onstderr\n"
+
