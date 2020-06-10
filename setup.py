@@ -7,6 +7,6 @@ setup(
     packages=['exec_utils'],
     install_requires=[''],
     version='0.1.0',
-    license='Proprietary',
+    license='MIT',
     description='Versatile utility to execute commands',
 )
