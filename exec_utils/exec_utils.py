@@ -5,6 +5,7 @@ from exec_utils.exec_strict_error import ExecStrictError
 from exec_utils.slurper import Slurper
 from exec_utils.burper import Burper
 
+
 class ExecHandler(object):
     def __init__(self, log_file=None, log_console=False, cwd=None, capture_output=True, env=None,
                  log_handle=None, return_stderr=False):
@@ -83,7 +84,6 @@ def exec_strict(cmd, stdin_str=None, stdin_bytes=None, log_file=None,
                 current process is used. Be aware, you might need to set PATH and other variables when manually
                 configuring an env
     :return: the stdout output, OR (stdout, stderr,) if return_stderr is set to True
-
     """
 
     if stdin_str is not None:
