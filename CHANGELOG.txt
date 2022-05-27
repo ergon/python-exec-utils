@@ -1,0 +1,4 @@
+
+## 1.0.1
+
+* new method ```exec_strict_direct``` which executes a command without capturing stdout/stderr.

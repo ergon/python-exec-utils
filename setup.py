@@ -6,7 +6,7 @@ setup(
     author_email='reto.schuettel@ergon.ch',
     packages=['exec_utils'],
     install_requires=[''],
-    version='0.1.0',
+    version='0.1.1',
     license='MIT',
     description='Versatile utility to execute commands',
 )
