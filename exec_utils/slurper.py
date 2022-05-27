@@ -18,7 +18,6 @@ class Slurper(threading.Thread):
             self.console_log_function = console_handle.write
             self.log_console = log_console
 
-        self.log_console = log_console
         self.log_file = log_file
         if self.log_file:
             self.logfile_handle = open(log_file, "a")
