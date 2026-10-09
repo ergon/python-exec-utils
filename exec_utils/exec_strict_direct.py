@@ -4,7 +4,7 @@ from subprocess import Popen
 from exec_utils.exec_strict_error import ExecStrictError
 
 
-class ExecHandlerDirect(object):
+class ExecHandlerDirect:
     def __init__(self, cwd=None, env=None):
         self.cwd = cwd
         self.env = env
@@ -16,7 +16,7 @@ class ExecHandlerDirect(object):
     def wait(self):
         self.handle.wait()
         if self.handle.returncode != 0:
-            raise ExecStrictError("error while executing %s" % repr(self.cmd),
+            raise ExecStrictError(f"error while executing {self.cmd!r}",
                                   stdout=None,
                                   stderr=None,
                                   exit_code=self.handle.returncode)

@@ -1,12 +1,12 @@
 import sys
 from subprocess import PIPE, Popen
 
+from exec_utils.burper import Burper
 from exec_utils.exec_strict_error import ExecStrictError
 from exec_utils.slurper import Slurper
-from exec_utils.burper import Burper
 
 
-class ExecHandler(object):
+class ExecHandler:
     def __init__(self, log_file=None, log_console=False, cwd=None, capture_output=True, env=None,
                  log_handle=None, return_stderr=False):
         self.log_file = log_file
@@ -46,10 +46,9 @@ class ExecHandler(object):
             self.stdin.join()
 
         if self.handle.returncode != 0:
-            raise ExecStrictError("error while executing %s,\nstdout: %s\nstderr: %s\n" % (
-                repr(self.cmd),
-                stdout_str,
-                stderr_str), stdout_str, stderr_str, self.handle.returncode)
+            raise ExecStrictError(
+                f"error while executing {self.cmd!r},\nstdout: {stdout_str}\nstderr: {stderr_str}\n",
+                stdout_str, stderr_str, self.handle.returncode)
         if self.capture_output:
             if self.return_stderr:
                 return stdout_str, stderr_str

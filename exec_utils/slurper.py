@@ -46,7 +46,6 @@ class Slurper(threading.Thread):
             if self.log_handle:
                 self.log_handle(line)
             if self.logfile_handle:
-                self.logfile_handle.write("%s: %s" % (
-                    datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-                    line))
+                timestamp = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+                self.logfile_handle.write(f"{timestamp}: {line}")
         self.result = "".join(lines)
