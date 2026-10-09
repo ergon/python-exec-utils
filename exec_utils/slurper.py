@@ -4,7 +4,6 @@ from datetime import datetime
 
 
 class Slurper(threading.Thread):
-
     def __init__(self, handle, log_file, log_console, log_handle, console_handle, capture_output):
         super().__init__()
         self.capture_output = capture_output
@@ -36,8 +35,8 @@ class Slurper(threading.Thread):
             # even if the user doesn't want any
             lines = collections.deque(maxlen=4096)
 
-        for line_bytes in iter(self.handle.readline, ''):
-            if line_bytes == b'':
+        for line_bytes in iter(self.handle.readline, ""):
+            if line_bytes == b"":
                 break
             line = line_bytes.decode("utf-8", "backslashreplace")
             lines.append(line)

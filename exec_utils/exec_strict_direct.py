@@ -16,10 +16,9 @@ class ExecHandlerDirect:
     def wait(self):
         self.handle.wait()
         if self.handle.returncode != 0:
-            raise ExecStrictError(f"error while executing {self.cmd!r}",
-                                  stdout=None,
-                                  stderr=None,
-                                  exit_code=self.handle.returncode)
+            raise ExecStrictError(
+                f"error while executing {self.cmd!r}", stdout=None, stderr=None, exit_code=self.handle.returncode
+            )
         return None
 
     def kill(self):
@@ -43,9 +42,7 @@ def exec_strict_direct(cmd, cwd=None, env=None):
 
     """
 
-    eh = ExecHandlerDirect(
-        cwd=cwd,
-        env=env)
+    eh = ExecHandlerDirect(cwd=cwd, env=env)
 
     eh.prepare(cmd)
 

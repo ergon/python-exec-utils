@@ -7,8 +7,16 @@ from exec_utils.slurper import Slurper
 
 
 class ExecHandler:
-    def __init__(self, log_file=None, log_console=False, cwd=None, capture_output=True, env=None,
-                 log_handle=None, return_stderr=False):
+    def __init__(
+        self,
+        log_file=None,
+        log_console=False,
+        cwd=None,
+        capture_output=True,
+        env=None,
+        log_handle=None,
+        return_stderr=False,
+    ):
         self.log_file = log_file
         self.capture_output = capture_output
         self.cwd = cwd
@@ -21,10 +29,12 @@ class ExecHandler:
         self.cmd = cmd
         self.handle = Popen(self.cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE, cwd=self.cwd, env=self.env)
 
-        self.stdout = Slurper(self.handle.stdout, self.log_file, self.log_console,
-                              self.log_handle, sys.stdout, self.capture_output)
-        self.stderr = Slurper(self.handle.stderr, self.log_file, self.log_console,
-                              self.log_handle, sys.stderr, self.capture_output)
+        self.stdout = Slurper(
+            self.handle.stdout, self.log_file, self.log_console, self.log_handle, sys.stdout, self.capture_output
+        )
+        self.stderr = Slurper(
+            self.handle.stderr, self.log_file, self.log_console, self.log_handle, sys.stderr, self.capture_output
+        )
 
         self.stdin = None
 
@@ -48,7 +58,10 @@ class ExecHandler:
         if self.handle.returncode != 0:
             raise ExecStrictError(
                 f"error while executing {self.cmd!r},\nstdout: {stdout_str}\nstderr: {stderr_str}\n",
-                stdout_str, stderr_str, self.handle.returncode)
+                stdout_str,
+                stderr_str,
+                self.handle.returncode,
+            )
         if self.capture_output:
             if self.return_stderr:
                 return stdout_str, stderr_str
@@ -61,9 +74,18 @@ class ExecHandler:
         self.handle.kill()
 
 
-def exec_strict(cmd, stdin_str=None, stdin_bytes=None, log_file=None,
-                log_console=False, cwd=None, capture_output=True, env=None,
-                log_handle=None, return_stderr=False):
+def exec_strict(
+    cmd,
+    stdin_str=None,
+    stdin_bytes=None,
+    log_file=None,
+    log_console=False,
+    cwd=None,
+    capture_output=True,
+    env=None,
+    log_handle=None,
+    return_stderr=False,
+):
     """
     Execute a command, blocking during the execution. Returns the stdout of the
     the command, and can optionally write the output (stderr and stdout) to a logfile and or the console
@@ -87,17 +109,19 @@ def exec_strict(cmd, stdin_str=None, stdin_bytes=None, log_file=None,
 
     if stdin_str is not None:
         if stdin_bytes is not None:
-            raise ValueError('stdin_str and stdin_bytes must not both be defined.')
+            raise ValueError("stdin_str and stdin_bytes must not both be defined.")
 
         stdin_bytes = stdin_str.encode("utf-8")
 
-    eh = ExecHandler(log_file=log_file,
-                     log_console=log_console,
-                     cwd=cwd,
-                     env=env,
-                     capture_output=capture_output,
-                     log_handle=log_handle,
-                     return_stderr=return_stderr)
+    eh = ExecHandler(
+        log_file=log_file,
+        log_console=log_console,
+        cwd=cwd,
+        env=env,
+        capture_output=capture_output,
+        log_handle=log_handle,
+        return_stderr=return_stderr,
+    )
 
     eh.prepare(cmd, stdin_bytes)
 

@@ -2,7 +2,6 @@ import threading
 
 
 class Burper(threading.Thread):
-
     def __init__(self, stdin_bytes, stdin_handle):
         super().__init__()
         self.stdin_bytes = stdin_bytes

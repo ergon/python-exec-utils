@@ -13,9 +13,7 @@ def test_simple_call_with_stdin():
 
 def test_simple_call_with_log_handles():
     logs = []
-    exec_utils.exec_strict("cat",
-                           stdin_str="hello world",
-                           log_handle=lambda line: logs.append(line))
+    exec_utils.exec_strict("cat", stdin_str="hello world", log_handle=lambda line: logs.append(line))
 
     assert len(logs) == 1
     assert logs[0] == "hello world"
